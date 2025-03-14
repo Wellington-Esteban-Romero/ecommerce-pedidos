@@ -17,29 +17,45 @@ public class ProductoServiceImpl implements ProductoSevice {
 
     @Override
     public List<Producto> listarProductos() {
-        return productoRepository.listar();
+        try {
+            return productoRepository.listar();
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public Producto agregarProducto(Producto producto) throws ApiServiceException {
-        return productoRepository.agregar(producto);
+    public Producto agregarProducto(Producto producto) {
+        try {
+            return productoRepository.agregar(producto);
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
     public Optional<Producto> obtenerProducto(String nombre) {
-        return productoRepository.porNombre(nombre);
+        try {
+            return productoRepository.porNombre(nombre);
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
     public synchronized boolean actualizarStock(String nombre, int cantidad) {
-        Optional<Producto> productoOptional = obtenerProducto(nombre);
-        if (productoOptional.isPresent()) {
-            Producto producto = productoOptional.get();
-            if (producto.getStock() >= cantidad) {
-                producto.setStock(producto.getStock() - cantidad);
-                productoRepository.actualizar(producto);
-                return Boolean.TRUE;
+        try {
+            Optional<Producto> productoOptional = obtenerProducto(nombre);
+            if (productoOptional.isPresent()) {
+                Producto producto = productoOptional.get();
+                if (producto.getStock() >= cantidad) {
+                    producto.setStock(producto.getStock() - cantidad);
+                    productoRepository.actualizar(producto);
+                    return Boolean.TRUE;
+                }
             }
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
         }
         return Boolean.FALSE;
     }
