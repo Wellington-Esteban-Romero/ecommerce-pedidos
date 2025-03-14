@@ -15,12 +15,12 @@ public class ProductoRepository {
 
     public ProductoRepository() {
         //productos de prueba
-        productos.put("IMac", new Producto("IMac", 1500, 10));
+        productos.put("iMac", new Producto("iMac", 1500, 10));
         productos.put("Nintendo Switch", new Producto("Nintendo Switch", 300, 5));
         productos.put("Monitor ASUS", new Producto("Monitor ASUS", 400, 20));
     }
 
-    public List<Producto> listar() {
+    public List<Producto> listar() throws RuntimeException {
         try {
             return List.copyOf(productos.values());
         } catch (RuntimeException e) {
