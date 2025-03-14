@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ProductoSevice {
     List<Producto> listarProductos();
-    void agregarProducto(Producto producto);
+    Producto agregarProducto(Producto producto);
     Optional<Producto> obtenerProducto(String nombre);
     boolean actualizarStock(String nombre, int cantidad);
 }
