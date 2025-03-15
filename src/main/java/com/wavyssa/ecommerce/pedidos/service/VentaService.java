@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,7 +25,15 @@ public class VentaService {
         try {
             double ingresosTotales = historial_ventas.stream().mapToDouble(Venta::getTotal).sum();
             Map<String, Long> productosMasVendidos = historial_ventas.stream()
-                    .collect(Collectors.groupingBy(Venta::getProducto, Collectors.summingLong(Venta::getCantidad)));
+                    .collect(Collectors.groupingBy(Venta::getProducto, Collectors.summingLong(Venta::getCantidad)))
+                    .entrySet().stream()
+                    .sorted((e1, e2) -> Long.compare(e2.getValue(), e1.getValue()))
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            Map.Entry::getValue,
+                            (e1, e2) -> e1,
+                            LinkedHashMap::new)
+                    );
             System.out.println("Ingresos: " + ingresosTotales + " $ " + ". Productos más vendidos: " + productosMasVendidos);
         } catch (RuntimeException e) {
             System.out.println("Error al generar resumenVentas: " + e.getMessage()); // se podría cambiar a un log de registro
