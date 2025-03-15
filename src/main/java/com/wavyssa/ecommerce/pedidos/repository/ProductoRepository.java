@@ -1,6 +1,5 @@
 package com.wavyssa.ecommerce.pedidos.repository;
 
-import com.wavyssa.ecommerce.pedidos.exception.ApiServiceException;
 import com.wavyssa.ecommerce.pedidos.model.Producto;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class ProductoRepository {
 
-    private ConcurrentHashMap<String, Producto> productos = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Producto> productos = new ConcurrentHashMap<>();
 
     public ProductoRepository() {
         //productos de prueba
@@ -38,28 +37,16 @@ public class ProductoRepository {
 
     public Producto agregar(Producto producto) throws RuntimeException {
         try {
-            if (!productos.containsKey(producto.getNombre())) {
-                productos.put(producto.getNombre(), producto);
-            } else {
-                Optional<Producto> productoOptional = productos.values().stream()
-                        .filter(producto1 -> producto1.getNombre().equals(producto.getNombre()))
-                        .findAny();
-
-                if (productoOptional.isPresent()) {
-                    Producto pro = productoOptional.get();
-                    pro.setStock(pro.getStock() + producto.getStock());
-                    productos.put(producto.getNombre(), pro);
-                }
-            }
+            productos.put(producto.getNombre(), producto);
         } catch (RuntimeException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
         return productos.get(producto.getNombre());
     }
 
-    public void actualizar(Producto producto) throws RuntimeException {
+    public void eliminar(String nombre) throws RuntimeException {
         try {
-            productos.put(producto.getNombre(), producto);
+            productos.values().removeIf(prod -> prod.getNombre().equals(nombre));
         } catch (RuntimeException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

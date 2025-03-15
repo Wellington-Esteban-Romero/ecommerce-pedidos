@@ -20,13 +20,13 @@ public class StockService {
             List<Producto> productos = productoService.listarProductos();
             System.out.println("Estado del stock:");
             productos.forEach(producto -> {
-                String disponibilidad;
+                String disponibilidad = producto.getNombre();
                 if (producto.getStock() == 0) {
-                    disponibilidad = producto.getNombre() + " - FUERA DE STOCK";
-                } else if (producto.getStock() <= 5) {
-                    disponibilidad = producto.getNombre() + " - STOCK BAJO";
-                } else {
-                    disponibilidad = producto.getNombre() + " - STOCK ALTO";
+                    disponibilidad += " - FUERA DE STOCK";
+                } else if (producto.getStock() > 0 && producto.getStock() <= 5) {
+                    disponibilidad += " - STOCK BAJO";
+                } else if (producto.getStock() >= 20) {
+                    disponibilidad += " - STOCK ALTO";
                 }
                 System.out.println(disponibilidad);
             });

@@ -34,6 +34,15 @@ public class ProductoServiceImpl implements ProductoSevice {
     }
 
     @Override
+    public Producto actualizarProducto(Producto producto) {
+        try {
+            return productoRepository.agregar(producto);
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Optional<Producto> obtenerProducto(String nombre) {
         try {
             return productoRepository.porNombre(nombre);
@@ -50,7 +59,7 @@ public class ProductoServiceImpl implements ProductoSevice {
                 Producto producto = productoOptional.get();
                 if (producto.getStock() >= cantidad) {
                     producto.setStock(producto.getStock() - cantidad);
-                    productoRepository.actualizar(producto);
+                    actualizarProducto(producto);
                     return Boolean.TRUE;
                 }
             }
@@ -58,5 +67,14 @@ public class ProductoServiceImpl implements ProductoSevice {
             throw new ApiServiceException(e.getMessage(), e);
         }
         return Boolean.FALSE;
+    }
+
+    @Override
+    public void eliminarProducto(String nombre) {
+        try {
+            productoRepository.eliminar(nombre);
+        } catch (RuntimeException e) {
+            throw new ApiServiceException(e.getMessage(), e);
+        }
     }
 }
