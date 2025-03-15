@@ -2,9 +2,26 @@
 
 Este proyecto es una API REST construida con **Spring Boot 3**, **Maven** y **Lombok**, que permite gestionar productos, procesar pedidos de múltiples clientes en paralelo y registrar ventas en un historial. Se enfoca en la **concurrencia segura**, validación de stock y generación de reportes automáticos.
 
+## 📌 Índice
+
+| Sección | Descripción |
+|---------|------------|
+| [🚀 Características principales](#-características-principales) | Funcionalidades clave de la API |
+| [📌 Datos de prueba predefinidos](#-datos-de-prueba-predefinidos) | Productos cargados al iniciar la aplicación |
+| [📌 Requisitos previos](#-requisitos-previos) | Instalaciones necesarias antes de ejecutar la API |
+| [💻 Instalación y ejecución](#-instalación-y-ejecución) | Pasos para clonar, compilar y ejecutar el proyecto |
+| [🌍 Endpoints disponibles](#-endpoints-disponibles) | Lista de endpoints con ejemplos |
+| [📜 Ejemplo de logs esperados](#-ejemplo-de-logs-esperados) | Muestra de salida esperada en consola |
+| [🛠 Tecnologías utilizadas](#-tecnologías-utilizadas) | Stack tecnológico del proyecto |
+| [📄 Licencia](#-licencia) | Tipo de licencia del proyecto |
+| [✨ Contribuciones](#-contribuciones) | Cómo contribuir al desarrollo |
+| [📩 Contacto](#-contacto) | Información de contacto |
+
+---
+
 ## 🚀 Características principales
 - **Gestión de productos** con nombre, precio y stock.
-- **Acceso concurrente al stock**, evitando condiciones de carrera.
+- **Acceso concurrente al stock**.
 - **Procesamiento de pedidos en paralelo**, asegurando stock suficiente.
 - **Validación automática** para evitar ventas sin stock suficiente.
 - **Registro de ventas** en un historial.
@@ -35,7 +52,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
       ```sh
       java -version
       ```
-    - Si no lo tienes, descárgalo desde [Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) o usa [Adoptium](https://adoptium.net/).
+    - Si no lo tienes, descárgalo desde [Oracle JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html).
 
 2. **Apache Maven**
     - Verifica la instalación con:
@@ -55,7 +72,7 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 ## 💻 Instalación y ejecución
 
 ### 1️⃣ Clonar el repositorio
-Si el código está en GitHub o GitLab, clónalo con:
+Clónalo con:
 ```sh
 git clone https://github.com/Wellington-Esteban-Romero/ecommerce-pedidos.git
 cd proyecto-springboot
@@ -82,22 +99,35 @@ java -jar target/nombre-del-jar.jar
 ## 🌍 Endpoints disponibles
 Puedes probar la API con **Postman**, `curl` o cualquier cliente HTTP.
 
+### 📌 Listar productos
+```sh
+curl -X GET http://localhost:8080/api/productos
+```
+
 ### 📌 Agregar un producto
 ```sh
 curl -X POST http://localhost:8080/api/producto \
      -H "Content-Type: application/json" \
-     -d '{"nombre":"HP OMEN","precio":1340,"stock":10}'
+     -d '{"nombre":"iPad","precio":800,"stock":15}'
 ```
-### 📌 Listar productos
+
+### 📌 Actualizar un producto
 ```sh
-curl -X GET http://localhost:8080/api/productos
+curl -X PUT http://localhost:8080/api/producto/iMac \
+     -H "Content-Type: application/json" \
+     -d '{"nombre":"iMac","precio":1600,"stock":8}'
+```
+
+### 📌 Eliminar un producto
+```sh
+curl -X DELETE http://localhost:8080/api/producto/Nintendo%20Switch
 ```
 
 ### 📌 Realizar un pedido
 ```sh
 curl -X POST http://localhost:8080/api/pedido \
      -H "Content-Type: application/json" \
-     -d '{"productos":{"iMac":2, "HP OMEN":5}}'
+     -d '{"productos":{"iMac":5, "Monitor ASUS":10}}'
 ```
 
 ---
@@ -107,15 +137,23 @@ Si todo funciona correctamente, la consola mostrará:
 ```
 Estado del stock:
 Nintendo Switch - STOCK BAJO
-HP OMEN - STOCK BAJO
-iMac - STOCK ALTO
+iMac
 Monitor ASUS - STOCK ALTO
+iPad
 Estado del stock:
 Nintendo Switch - STOCK BAJO
-HP OMEN - STOCK BAJO
-iMac - STOCK ALTO
+iMac
 Monitor ASUS - STOCK ALTO
-Ingresos: 9700.0 $ . Productos más vendidos: {HP OMEN=5, iMac=2}
+iPad
+Estado del stock:
+iMac
+Monitor ASUS - STOCK ALTO
+iPad
+Estado del stock:
+iMac - STOCK BAJO
+Monitor ASUS
+iPad
+Ingresos: 11500.0 $ . Productos más vendidos: {Monitor ASUS=10, iMac=5}
 ```
 
 ---
@@ -143,7 +181,7 @@ Este proyecto está bajo la licencia MIT. Puedes usarlo, modificarlo y distribui
 ---
 
 ## 📩 Contacto
-Si tienes dudas o sugerencias, contáctame en **correo@ejemplo.com**.
+Si tienes dudas o sugerencias, contáctame en **wellington9@live.com**.
 
 ---
 
