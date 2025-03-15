@@ -57,7 +57,8 @@ public class ApiController {
     }
 
     @PutMapping("/producto/{nombre}")
-    public ResponseEntity<?> actualizarProducto(@Valid @RequestBody Producto producto_obj, @PathVariable String nombre, BindingResult result) {
+    public ResponseEntity<?> actualizarProducto(@Valid @RequestBody Producto producto_obj, @PathVariable String nombre,
+                                                BindingResult result) {
 
         Optional<Producto> productoOptional;
         Producto producto;
